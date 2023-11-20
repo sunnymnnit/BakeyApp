@@ -1,0 +1,61 @@
+
+{% extends 'base.html' %}
+{% load static %}
+{% block head %}
+        
+<link rel="stylesheet" href="{% static 'css/myCustomStyle.css' %}">
+
+{% endblock head %}
+
+{% block body %}
+  This is body block
+  <script>
+    function hidePopUp(event)
+    {
+        event.preventDefault();
+        let form=document.getElementById("myForm")
+        form.remove();
+        var element = document.querySelector('.overlay');
+            element.classList.remove('overlay');
+        
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+  // Your code here
+  console.log('DOM is ready');
+});
+    
+  </script>
+  <div class="overlay">
+  <form accept="#" action="feature" id="myForm">
+    <span id="crossMark" style="color: red; " onclick="hidePopUp(event)">&#x2715;</span>
+        <fieldset>
+        <legend>Personal Info</legend>
+        <span>Name:</span> <input type="text" placeholder="enter name"></input>
+        <span>Address:</span> <textarea type="text" placeholder="enter address"  name="address" style="resize: vertical; width: 30%; height: 40px; position: absolute; margin-top: -1%;"></textarea>
+        <br>
+        <input type="radio" name="sameRadio"> male</input>
+        <br>
+        <input type="radio" name="sameRadio">female</input>
+        <br>
+        </fieldset>
+
+        <fieldset>
+            <legend>Contact Info</legend>
+            Mob no.:<input type="text" placeholder="enter mob no." style="border-radius: 10px;"></input>
+            Email:<input type="text" placeholder="enter email"></input>
+        </fieldset>
+        <br>
+        <button type="submit" style="border-radius: 10px;">
+            Submit
+        </button>
+
+  </form>
+
+</div>
+<div style="background-image: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\'><rect x=\'0\' y=\'0\' width=\'100\' height=\'100\' fill=\'red\' /></svg>')">
+    This div has an SVG background!
+  </div>
+  
+
+
+{% endblock body %}

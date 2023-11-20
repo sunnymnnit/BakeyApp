@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block head %}
+
+<link rel="stylesheet" href="{% static 'css/cart.css' %}">
+
+{% endblock head %}
+
+{% block body %}
+This is body block
+<script>
+let cartIds;
+
+  function makeCart(event, formId, id) {
+    event.preventDefault();
+    let form = document.getElementById(formId);
+    form.style.display = 'none';
+    let countButton = document.getElementById("increment-section" + id);
+    countButton.style.display = 'block'
+    let cartButton = document.getElementById("gotocart" + id);
+    cartButton.style.display = 'block'
+
+    var incrementButton = document.querySelector('#increment-button' + id);
+    var decrementButton = document.querySelector('#decrement-button' + id);
+    var quantityInput = document.querySelector('#quantity-input' + id);
+
+    initialValue=parseInt(quantityInput.value);
+    if(!isNaN(initialValue))
+    {
+      quantityInput.value = initialValue + 1;
+    }
+    incrementButton.addEventListener('click', function () {
+      var currentValue = parseInt(quantityInput.value);
+      if(!isNaN(currentValue))
+      {
+        quantityInput.value = currentValue + 1;
+      }
+    });
+
+    decrementButton.addEventListener('click', function () {
+      var currentValue = parseInt(quantityInput.value);
+      if (!isNaN(currentValue) && currentValue > 1) {
+        quantityInput.value = currentValue - 1;
+      }
+    });
+  }
+
+  function goToCart(event,id)
+  {
+    let queryData="";
+    let quantityInput = document.querySelectorAll('.quantity-input');
+    quantityInput.forEach(function (element) {
+      var currentValue = parseInt(element.value);
+      if (!isNaN(currentValue) && currentValue > 0) {
+
+        queryData+=element.id+"="+currentValue.toString();
+        queryData+="&";
+      }
+    });
+    window.open("cart?"+queryData);
+  }
+
+
+
+
+
+</script>
+
+<div class="container">
+
+  <div class="row">
+    {% for card in bakeryCards %}
+
+    <div class="col-md-4">
+      <div class="card mb-4 box-shadow">
+        <img class="card-img-top" data-src={{card.image}} alt="Thumbnail [100%x225]"
+          style="height: 225px; width: 100%; display: block;" src={{card.image}} data-holder-rendered="true">
+        <div class="card-body">
+          <p class="card-text">{{card.description}}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+              <button class="btn btn-sm btn-outline-secondary">Rs. {{card.rate}}</button>
+              <button type="button" id="order_now{{card.cardId}}" class="btn btn-sm btn-outline-secondary"
+                onclick="makeCart(event,'order_now{{card.cardId}}','{{card.cardId}}')">Order Now</button>
+
+
+
+              <div class="increment-section" id="increment-section{{card.cardId}}" style="display: none;">
+                <button class="decrement-button" id="decrement-button{{card.cardId}}">-</button>
+                <input type="text" class="quantity-input" id="quantity-input{{card.cardId}}" value="0">
+                <button class="increment-button" id="increment-button{{card.cardId}}">+</button>
+              </div>
+
+
+              <button class="btn-sm" id="gotocart{{card.cardId}}" style="border-color: #e3ebf7;
+                display: inline-block;
+                font-family: var(--mdb-btn-font-family);
+                font-size: var(--mdb-btn-font-size);
+                font-weight: var(--mdb-btn-font-weight);
+                line-height: var(--mdb-btn-line-height);
+                color: rgb(40, 102, 156);
+                background-color: var(--mdb-btn-bg);
+                display: none;" onclick="goToCart(event,'{{card.cardId}}')">
+                <strong>Go to Cart</strong></button>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    <div class="col-md-4">
+      <div class="card mb-4 box-shadow">
+        <img class="card-img-top"
+          data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail"
+          alt="Thumbnail [100%x225]"
+          src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22509%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20509%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_187cd3463dd%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A25pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_187cd3463dd%22%3E%3Crect%20width%3D%22509%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22170.24478912353516%22%20y%3D%22123.70000076293945%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
+          data-holder-rendered="true" style="height: 225px; width: 100%; display: block;">
+        <div class="card-body">
+          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
+            content. This content is a little bit longer.</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+            </div>
+            <small class="text-muted">9 mins</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card mb-4 box-shadow">
+        <img class="card-img-top"
+          data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail"
+          alt="Thumbnail [100%x225]"
+          src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22509%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20509%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_187cd3463de%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A25pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_187cd3463de%22%3E%3Crect%20width%3D%22509%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22170.24478912353516%22%20y%3D%22123.70000076293945%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
+          data-holder-rendered="true" style="height: 225px; width: 100%; display: block;">
+        <div class="card-body">
+          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
+            content. This content is a little bit longer.</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+            </div>
+            <small class="text-muted">9 mins</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card mb-4 box-shadow">
+        <img class="card-img-top"
+          data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail"
+          alt="Thumbnail [100%x225]"
+          src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22509%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20509%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_187cd3463df%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A25pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_187cd3463df%22%3E%3Crect%20width%3D%22509%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22170.24478912353516%22%20y%3D%22123.70000076293945%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
+          data-holder-rendered="true" style="height: 225px; width: 100%; display: block;">
+        <div class="card-body">
+          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
+            content. This content is a little bit longer.</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+            </div>
+            <small class="text-muted">9 mins</small>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card mb-4 box-shadow">
+        <img class="card-img-top"
+          data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail"
+          alt="Thumbnail [100%x225]"
+          src="data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%22509%22%20height%3D%22225%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20509%20225%22%20preserveAspectRatio%3D%22none%22%3E%3Cdefs%3E%3Cstyle%20type%3D%22text%2Fcss%22%3E%23holder_187cd3463df%20text%20%7B%20fill%3A%23eceeef%3Bfont-weight%3Abold%3Bfont-family%3AArial%2C%20Helvetica%2C%20Open%20Sans%2C%20sans-serif%2C%20monospace%3Bfont-size%3A25pt%20%7D%20%3C%2Fstyle%3E%3C%2Fdefs%3E%3Cg%20id%3D%22holder_187cd3463df%22%3E%3Crect%20width%3D%22509%22%20height%3D%22225%22%20fill%3D%22%2355595c%22%3E%3C%2Frect%3E%3Cg%3E%3Ctext%20x%3D%22170.24478912353516%22%20y%3D%22123.70000076293945%22%3EThumbnail%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E"
+          data-holder-rendered="true" style="height: 225px; width: 100%; display: block;">
+        <div class="card-body">
+          <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional
+            content. This content is a little bit longer.</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+            </div>
+            <small class="text-muted">9 mins</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+
+  });
+
+</script>
+{% endblock body %}
